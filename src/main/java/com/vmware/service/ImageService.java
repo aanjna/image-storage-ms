@@ -12,9 +12,9 @@ public interface ImageService {
     
     Image uploadImage(Long albumId, MultipartFile file, String title, String description) throws IOException;
 
-    Image findByAlbumIdAndImageId(Long albumId, Long imgId);
+    Image findByImageId(Long imgId);
 
-    Image uploadImages(MultipartFile image);
+    void uploadImages(MultipartFile[] image);
 
     void deleteImageBy(Long id);
 }

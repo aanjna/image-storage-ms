@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,37 +41,46 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Image findByAlbumIdAndImageId(Long albumId, Long imgId) {
-        Optional<ImageAlbum> album = albumRepository.findById(albumId);
-        Image image = imageRepository.findByImageAlbumId(album.get().getId());
-        return image;
+    public Image findByImageId(Long imgId) {
+        Optional<Image> image = imageRepository.findById(imgId);
+        return image.get();
     }
 
     @Override
-    public Image uploadImages(MultipartFile image) {
-        String fileName = image.getOriginalFilename();
-        String randomId = UUID.randomUUID().toString();
-        String randomFileName = randomId.concat(fileName.substring(fileName.lastIndexOf(".")));
-        String filePath = IMAGE_FOLDER + File.separator + randomFileName;
+    public void uploadImages(MultipartFile[] images) {
+        List<Image> imageList = new ArrayList<>();
+        ImageAlbum album = albumRepository.getAlbumById(1L);
+        for (MultipartFile imageFile : images) {
+            String fileName = imageFile.getOriginalFilename();
+            String randomId = UUID.randomUUID().toString();
+            String randomFileName = randomId.concat(fileName.substring(fileName.lastIndexOf(".")));
+            String filePath = IMAGE_FOLDER + File.separator + randomFileName;
 
+            fileFolderCheck(imageFile, filePath);
+
+            Image imageObj = new Image();
+            imageObj.setFilePath(filePath);
+            imageObj.setImageAlbum(album);
+            imageObj.setTitle(imageFile.getOriginalFilename());
+            imageObj.setDescription("some description about image file");
+            imageObj.setUploadDate(System.currentTimeMillis());
+            imageList.add(imageObj);
+        }
+        album.setImages(imageList);
+
+        albumRepository.save(album);
+    }
+
+    private static void fileFolderCheck(MultipartFile imageFile, String filePath) {
         File f = new File(IMAGE_FOLDER);
         if (!f.exists()) {
             f.mkdir();
         }
         try {
-            Files.copy(image.getInputStream(), Paths.get(filePath));
+            Files.copy(imageFile.getInputStream(), Paths.get(filePath));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        Image imageObj = new Image();
-        imageObj.setFilePath(filePath);
-        ImageAlbum album = albumRepository.getAlbumById(1L);
-        imageObj.setImageAlbum(album);
-        imageObj.setTitle(image.getOriginalFilename());
-        imageObj.setDescription("");
-        imageObj.setUploadDate(System.currentTimeMillis());
-        imageRepository.save(imageObj);
-        return imageObj;
     }
 
     @Override

@@ -19,6 +19,34 @@ public class ImageController {
         this.imageService = imageService;
     }
 
+    @PostMapping("/upload")
+    public ResponseEntity<?> uploadImages(@RequestParam("images") MultipartFile[] images) {
+        try {
+            imageService.uploadImages(images);
+            return ResponseEntity.ok("Image files uploaded successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{imgId}")
+    public ResponseEntity<Image> getImagesById(@PathVariable("imgId") Long imgId) {
+        Image images = imageService.findByImageId(imgId);
+        return ResponseEntity.ok(images);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Image>> getAllImages(@PathVariable("albumId") Long albumId) {
+        List<Image> images = imageService.findByAlbumId(albumId);
+        return ResponseEntity.ok(images);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteImage(@PathVariable("id") Long id) {
+        imageService.deleteImageBy(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping("/image-upload")
     public ResponseEntity<String> uploadImage(
             @PathVariable("albumId") Long albumId,
@@ -34,33 +62,6 @@ public class ImageController {
         }
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<String> uploadImg(@RequestParam("image") MultipartFile image) {
-        try {
-            Image saveImage = imageService.uploadImages(image);
-            return ResponseEntity.ok("Image uploaded successfully. Image: " + saveImage);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/{albumId}/images/{imgId}")
-    public ResponseEntity<Image> getImagesById(@PathVariable("albumId") Long albumId, @PathVariable("imgId") Long imgId) {
-        Image images = imageService.findByAlbumIdAndImageId(albumId, imgId);
-        return ResponseEntity.ok(images);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<Image>> getAllImages(@PathVariable("albumId") Long albumId) {
-        List<Image> images = imageService.findByAlbumId(albumId);
-        return ResponseEntity.ok(images);
-    }
-
-    @DeleteMapping
-    public ResponseEntity<?> deleteImage(@PathVariable("id") Long id) {
-        imageService.deleteImageBy(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
 }
 
