@@ -1,0 +1,13 @@
+
+W
+java:S1118":Add a private constructor to hide the implicit public one.(Ş‹ı8™¬ †1
+M
+java:S1874"0Remove this use of "signWith"; it is deprecated.(›ÈÚ8‹ã¼æ‚1
+K
+java:S1874".Remove this use of "parser"; it is deprecated.(¤‹ıà8ã¼æ‚1
+R
+java:S1874"5Remove this use of "setSigningKey"; it is deprecated.(ÑƒÅÙ8ã¼æ‚1
+K
+java:S1874'".Remove this use of "parser"; it is deprecated.(ÄŞ¼ë8•ã¼æ‚1
+R
+java:S1874'"5Remove this use of "setSigningKey"; it is deprecated.(ÄŞ¼ë8•ã¼æ‚1
