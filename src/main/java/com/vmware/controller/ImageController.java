@@ -56,5 +56,11 @@ public class ImageController {
         return ResponseEntity.ok(images);
     }
 
+    @DeleteMapping
+    public ResponseEntity<?> deleteImage(@PathVariable("id") Long id) {
+        imageService.deleteImageBy(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
 

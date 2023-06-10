@@ -15,4 +15,6 @@ public interface ImageService {
     Image findByAlbumIdAndImageId(Long albumId, Long imgId);
 
     Image uploadImages(MultipartFile image);
+
+    void deleteImageBy(Long id);
 }

@@ -74,6 +74,11 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public void deleteImageBy(Long id) {
+        imageRepository.deleteById(id);
+    }
+
+    @Override
     public Image uploadImage(Long albumId, MultipartFile file, String title, String description) throws IOException {
         Image image = new Image();
         ImageAlbum imageAlbum = albumRepository.getAlbumById(albumId);
