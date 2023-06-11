@@ -6,4 +6,6 @@ public interface AlbumService {
     ImageAlbum createAlbum(String name);
 
     void deleteAlbumById(Long id);
+
+    ImageAlbum findById(Long albumId);
 }

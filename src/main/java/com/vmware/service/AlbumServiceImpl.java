@@ -4,6 +4,8 @@ import com.vmware.modal.ImageAlbum;
 import com.vmware.repository.AlbumRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AlbumServiceImpl implements AlbumService {
 
@@ -22,6 +24,12 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public void deleteAlbumById(Long id) {
         albumRepository.deleteById(id);
+    }
+
+    @Override
+    public ImageAlbum findById(Long albumId) {
+        Optional<ImageAlbum> album = albumRepository.findById(albumId);
+        return album.get();
     }
 
 }

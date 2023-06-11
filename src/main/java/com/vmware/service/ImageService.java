@@ -1,6 +1,7 @@
 package com.vmware.service;
 
 import com.vmware.modal.Image;
+import com.vmware.modal.ImageAlbum;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -12,9 +13,11 @@ public interface ImageService {
     
     Image uploadImage(Long albumId, MultipartFile file, String title, String description) throws IOException;
 
-    Image findByImageId(Long imgId);
+    Image findImageById(Long imgId);
 
     void uploadImages(MultipartFile[] image);
 
     void deleteImageBy(Long id);
+
+    Image findImageByIdFromImageAlbum(Long imageId, ImageAlbum album);
 }

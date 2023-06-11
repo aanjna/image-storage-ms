@@ -23,7 +23,8 @@ public class Image {
     @Column(nullable = false)
     private Long uploadDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "album_id")
     ImageAlbum imageAlbum;
 
 }

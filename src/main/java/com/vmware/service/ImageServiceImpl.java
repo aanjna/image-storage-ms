@@ -5,6 +5,8 @@ import com.vmware.modal.ImageAlbum;
 import com.vmware.repository.AlbumRepository;
 import com.vmware.repository.ImageRepository;
 import com.vmware.utills.ImageUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +24,7 @@ import java.util.UUID;
 @Service
 public class ImageServiceImpl implements ImageService {
 
+    private static final Logger logger = LogManager.getLogger(ImageServiceImpl.class);
     private static final String IMAGE_FOLDER = "/imageAlbum";
 
     ImageUtils imageUtils;
@@ -41,8 +44,9 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Image findByImageId(Long imgId) {
+    public Image findImageById(Long imgId) {
         Optional<Image> image = imageRepository.findById(imgId);
+        logger.debug("log at find image by id");
         return image.get();
     }
 
@@ -86,6 +90,18 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public void deleteImageBy(Long id) {
         imageRepository.deleteById(id);
+    }
+
+    @Override
+    public Image findImageByIdFromImageAlbum(Long imageId, ImageAlbum album) {
+        List<Image> images = album.getImages();
+        Image image = null;
+        for (Image img : images) {
+            if (img.getId().equals(imageId)) {
+                image = img;
+            }
+        }
+        return image;
     }
 
     @Override

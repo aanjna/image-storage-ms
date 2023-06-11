@@ -3,6 +3,7 @@ package com.vmware.controller;
 import com.vmware.modal.Image;
 import com.vmware.service.ImageService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +20,7 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    @PostMapping("/upload")
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadImages(@RequestParam("images") MultipartFile[] images) {
         try {
             imageService.uploadImages(images);
@@ -31,7 +32,7 @@ public class ImageController {
 
     @GetMapping("/{imgId}")
     public ResponseEntity<Image> getImagesById(@PathVariable("imgId") Long imgId) {
-        Image images = imageService.findByImageId(imgId);
+        Image images = imageService.findImageById(imgId);
         return ResponseEntity.ok(images);
     }
 

@@ -15,7 +15,8 @@ public class ImageAlbum {
 
     @Column(nullable = false)
     private String name;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "imageAlbum")
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "imageAlbum")
     private List<Image> images;
 
 }
