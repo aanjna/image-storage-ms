@@ -36,10 +36,10 @@
     <div class="row">
         <div class="col-md-6 offset-md-3 mt-4">
 
-            <form action="image-upload" enctype="multipart/form-data"
+            <form action="upload" enctype="multipart/form-data"
                   method="post">
                 <div class="mb-3">
-                    <input type="file" name="img" class="form-control">
+                    <input type="file" name="img" id="formFile" class="form-control">
                 </div>
 
                 <div class="text-center">
@@ -55,11 +55,10 @@
 
 <div class="container">
     <div class="row">
-
-        <div class="col-md-3" th:each="im:${list}">
+        <div class="col-md-3" th:each="images:${list}">
             <div class="card">
                 <div class="card-body">
-                    <img alt="" th:src="@{'img/'+${im.imageName}}" width="100%"
+                    <img alt="" th:src="@{'/images?id='+${images.id}}" width="100%"
                          height="300px">
                 </div>
             </div>

@@ -15,9 +15,9 @@ public interface ImageService {
 
     Image findImageById(Long imgId);
 
-    void uploadImages(MultipartFile[] image);
+    void uploadImages(MultipartFile[] image) throws IOException;
 
-    void deleteImageBy(Long id);
+    void deleteImageById(Long id);
 
     Image findImageByIdFromImageAlbum(Long imageId, ImageAlbum album);
 }

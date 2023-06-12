@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/api/v1/images")
 public class ImageController {
 
@@ -44,7 +45,7 @@ public class ImageController {
 
     @DeleteMapping
     public ResponseEntity<?> deleteImage(@PathVariable("id") Long id) {
-        imageService.deleteImageBy(id);
+        imageService.deleteImageById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
