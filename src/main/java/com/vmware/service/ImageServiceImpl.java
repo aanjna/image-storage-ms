@@ -1,5 +1,6 @@
 package com.vmware.service;
 
+import com.vmware.exception.ImageNotFoundException;
 import com.vmware.modal.Image;
 import com.vmware.modal.ImageAlbum;
 import com.vmware.modal.ImageDto;
@@ -115,6 +116,17 @@ public class ImageServiceImpl implements ImageService {
         imageRepository.deleteById(id);
     }
 
+    public void deleteImage(Long imageId, Long albumId) {
+        Optional<Image> imageOptional = imageRepository.findByIdAndAlbumId(imageId, albumId);
+        if (imageOptional.isPresent()) {
+            Image image = imageOptional.get();
+            imageRepository.delete(image);
+        } else {
+            logger.info("Image Not Found : " + imageId);
+            throw new ImageNotFoundException("Image not found with id: " + imageId);
+        }
+    }
+
     @Override
     public Image findImageByIdFromImageAlbum(Long imageId, ImageAlbum album) {
         List<Image> images = album.getImages();
@@ -128,7 +140,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Image uploadImage(Long albumId, MultipartFile file, String title, String description) throws IOException {
+    public Image uploadImage(Long albumId, MultipartFile file) throws IOException {
         Image image = new Image();
         ImageAlbum imageAlbum = albumRepository.getAlbumById(albumId);
         if (!ObjectUtils.isEmpty(imageAlbum)) {
@@ -137,8 +149,8 @@ public class ImageServiceImpl implements ImageService {
             image.setImageAlbum(new ImageAlbum());
             throw new FileNotFoundException();
         }
-        image.setTitle(title);
-        image.setDescription(description);
+        image.setTitle("title");
+        image.setDescription("description");
         String filePath = uploadImageToAlbumStorage(file);
         image.setFilePath(filePath);
         image.setImageSize(compressBytes(file.getBytes()));
@@ -171,6 +183,8 @@ public class ImageServiceImpl implements ImageService {
         try {
             outputStream.close();
         } catch (IOException e) {
+            logger.error("Error Message" + e.getMessage());
+            e.printStackTrace();
         }
         System.out.println("Compressed Image Byte Size - " + outputStream.toByteArray().length);
 
@@ -190,9 +204,11 @@ public class ImageServiceImpl implements ImageService {
             }
             outputStream.close();
         } catch (IOException ioe) {
-
+            ioe.printStackTrace();
+            logger.error("Error Message" + ioe.getMessage());
         } catch (DataFormatException e) {
-
+            logger.error("Error Message" + e.getMessage());
+            e.printStackTrace();
         }
         return outputStream.toByteArray();
     }

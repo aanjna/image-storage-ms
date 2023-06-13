@@ -11,13 +11,14 @@ public interface ImageService {
     
     List<Image> findByAlbumId(Long albumId);
     
-    Image uploadImage(Long albumId, MultipartFile file, String title, String description) throws IOException;
+    Image uploadImage(Long albumId, MultipartFile file) throws IOException;
 
     Image findImageById(Long imgId);
 
     void uploadImages(MultipartFile[] image) throws IOException;
 
     void deleteImageById(Long id);
+    void deleteImage(Long imgId, Long albumId);
 
     Image findImageByIdFromImageAlbum(Long imageId, ImageAlbum album);
 }

@@ -44,19 +44,17 @@ public class ImageController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteImage(@PathVariable("id") Long id) {
-        imageService.deleteImageById(id);
+    public ResponseEntity<?> deleteImage(@PathVariable("imgId") Long imgId, @PathVariable("albumId") Long albumId) {
+        imageService.deleteImage(imgId, albumId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/image-upload")
     public ResponseEntity<String> uploadImage(
             @PathVariable("albumId") Long albumId,
-            @RequestParam("image") MultipartFile image,
-            @RequestParam("title") String title,
-            @RequestParam("description") String description) {
+            @RequestParam("image") MultipartFile image) {
         try {
-            Image saveImage = imageService.uploadImage(albumId, image, title, description);
+            Image saveImage = imageService.uploadImage(albumId, image);
 
             return ResponseEntity.ok("Image uploaded successfully. Image: " + saveImage);
         } catch (Exception e) {

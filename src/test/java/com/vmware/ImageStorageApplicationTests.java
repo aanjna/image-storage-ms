@@ -5,6 +5,7 @@ import com.vmware.modal.ImageAlbum;
 import com.vmware.repository.ImageRepository;
 import com.vmware.service.ImageService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -26,7 +27,7 @@ class ImageStorageApplicationTests {
 
     @Mock
     private ImageRepository imageRepository;
-    @Mock
+    @InjectMocks
     private ImageService imageService;
 
     @BeforeEach
@@ -36,7 +37,7 @@ class ImageStorageApplicationTests {
         imageRepository = Mockito.mock(ImageRepository.class);
     }
 
-//    @Test
+    @Test
     void test_FindImageById() {
         Long imgId = 1L;
         Image expectedImage = new Image();
@@ -49,7 +50,7 @@ class ImageStorageApplicationTests {
         verify(imageRepository, times(1)).findById(imgId);
     }
 
-//    @Test
+    @Test
     void test_getAllImages_inAlbum() {
         ImageAlbum album = new ImageAlbum();
         album.setId(1l);
@@ -66,7 +67,7 @@ class ImageStorageApplicationTests {
         assertEquals(1l, imgList.get(0).getId());
     }
 
-//    @Test
+    @Test
     void test_DeleteImage() {
         Long imgId = 1L;
         imageService.deleteImageById(imgId);
