@@ -19,8 +19,6 @@ git clone https://github.com/aanjna/image-storage-ms
   curl --location 'http://localhost:8080/api/v1/images/upload' \
   --form 'images=@"/Users/choudhary/Desktop/Screenshot.png"'
 
-
-
 Create Docker image
 Command to create docker image using Google JIB plugin
 
